@@ -8,7 +8,7 @@ Next.js 14 기반의 모던 웹 애플리케이션
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
 - **State Management**: React Hooks
-- **Deployment**: Vercel
+- **Deployment**: S3 + CloudFront
 - **Icons**: Lucide React
 
 ## 🏗️ 아키텍처
@@ -275,16 +275,17 @@ export default function GlobalError({
 
 ## 📊 배포 전략
 
-### Vercel 배포
+### S3 + CloudFront 배포
 ```bash
-# 자동 배포 (Git 연동)
-git push origin main
+# 빌드 및 배포
+npm run build
+npm run deploy
 
 # 수동 배포
-vercel --prod
+aws s3 sync out/ s3://aws-news.drumgoon.net-static --delete
+aws cloudfront create-invalidation --distribution-id E1E7R090QDM174 --paths "/*"
 ```
 
 ### 환경별 설정
-- **Development**: 로컬 개발 환경
-- **Preview**: PR 기반 미리보기
-- **Production**: 메인 브랜치 자동 배포
+- **Development**: 로컬 개발 환경 (npm run dev)
+- **Production**: S3 정적 호스팅 + CloudFront CDN
