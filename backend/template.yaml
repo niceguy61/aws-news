@@ -12,6 +12,7 @@ Globals:
       Variables:
         ARTICLES_TABLE: !Ref ArticlesTable
         BEDROCK_REGION: ap-northeast-2
+        CLAUDE_MODEL_ID: anthropic.claude-3-5-sonnet-20240620-v1:0
 
 Resources:
   ArticlesTable:
@@ -25,6 +26,8 @@ Resources:
           AttributeType: S
         - AttributeName: publishedAt
           AttributeType: S
+        - AttributeName: link
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
@@ -37,6 +40,12 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
+        - IndexName: link-index
+          KeySchema:
+            - AttributeName: link
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
 
   RSSCollectorFunction:
     Type: AWS::Serverless::Function
