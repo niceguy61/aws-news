@@ -3,11 +3,12 @@ const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb');
 const { BedrockRuntimeClient, InvokeModelCommand } = require('@aws-sdk/client-bedrock-runtime');
 const Parser = require('rss-parser');
 
-const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
-const bedrock = new BedrockRuntimeClient({});
+const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'ap-northeast-2' }));
+const bedrock = new BedrockRuntimeClient({ region: 'ap-northeast-2' });
 const parser = new Parser();
 
-const CLAUDE_MODEL_ID = 'apac.anthropic.claude-3-7-sonnet-20250219-v1:0';
+const CLAUDE_MODEL_ID = 'apac.anthropic.claude-3-5-sonnet-20240620-v1:0';
+console.log(`🤖 Using Claude model: ${CLAUDE_MODEL_ID}`);
 
 const RSS_FEEDS = [
   {
@@ -28,6 +29,12 @@ const RSS_FEEDS = [
 ];
 
 exports.handler = async () => {
+  console.log(`📊 Environment variables:`, {
+    ARTICLES_TABLE: process.env.ARTICLES_TABLE,
+    AWS_REGION: process.env.AWS_REGION,
+    BEDROCK_REGION: process.env.BEDROCK_REGION
+  });
+  
   const filterDate = new Date();
   filterDate.setMonth(filterDate.getMonth() - 3); // 3개월 전까지
   
@@ -84,6 +91,7 @@ exports.handler = async () => {
             updatedAt: new Date().toISOString()
           };
 
+          console.log(`💾 Saving to table: ${process.env.ARTICLES_TABLE}`);
           await dynamoClient.send(new PutCommand({
             TableName: process.env.ARTICLES_TABLE,
             Item: article
@@ -92,13 +100,24 @@ exports.handler = async () => {
           totalNew++;
           console.log(`✅ Processed: ${translatedTitle}`);
         } catch (error) {
-          console.error(`❌ Processing error for ${originalTitle}:`, error.message);
+          console.error(`❌ Processing error for ${originalTitle}:`, {
+            name: error.name,
+            message: error.message,
+            code: error.code,
+            statusCode: error.$metadata?.httpStatusCode,
+            requestId: error.$metadata?.requestId,
+            stack: error.stack
+          });
         }
         
         totalProcessed++;
       }
     } catch (error) {
-      console.error(`❌ Feed error ${feedConfig.url}:`, error.message);
+      console.error(`❌ Feed error ${feedConfig.url}:`, {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
     }
   }
   

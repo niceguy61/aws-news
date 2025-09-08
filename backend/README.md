@@ -1,6 +1,8 @@
-# AWS News Service - Backend
+# AWS News Service - Backend (Unofficial)
 
-서버리스 아키텍처 기반의 AWS 뉴스 수집 및 처리 백엔드
+**⚠️ AWS 비공식 프로젝트**
+
+서버리스 아키텍처 기반의 AWS 공개 RSS 피드 수집 및 처리 백엔드
 
 ## 🏗️ 아키텍처
 

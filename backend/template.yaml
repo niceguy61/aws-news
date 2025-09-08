@@ -11,6 +11,7 @@ Globals:
     Environment:
       Variables:
         ARTICLES_TABLE: !Ref ArticlesTable
+        BEDROCK_REGION: ap-northeast-2
 
 Resources:
   ArticlesTable:
@@ -58,7 +59,9 @@ Resources:
             - Effect: Allow
               Action:
                 - bedrock:InvokeModel
-              Resource: 'arn:aws:bedrock:*::foundation-model/apac.anthropic.claude-3-7-sonnet-20250219-v1:0'
+              Resource: 
+                - 'arn:aws:bedrock:ap-northeast-2::inference-profile/*'
+                - 'arn:aws:bedrock:ap-northeast-2::foundation-model/*'
 
   NewsAPIFunction:
     Type: AWS::Serverless::Function

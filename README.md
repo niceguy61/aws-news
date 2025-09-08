@@ -1,12 +1,23 @@
-# AWS News Service
+# AWS News Service (Unofficial)
 
-AWS RSS 피드를 수집하여 AI 번역 및 요약 기능을 제공하는 서버리스 뉴스 서비스
+**⚠️ 이 서비스는 AWS와 공식적으로 연관되지 않은 개인 프로젝트입니다.**
+
+AWS 공개 RSS 피드를 수집하여 AI 번역 및 요약 기능을 제공하는 비공식 뉴스 서비스
 
 ## 📋 프로젝트 개요
 
-AWS 공식 RSS 피드를 자동으로 수집하고, AWS Bedrock의 Claude 3.7 Sonnet을 활용하여 한국어 번역 및 요약을 제공하는 뉴스 서비스입니다.
+**비공식 프로젝트**: AWS 공개 RSS 피드를 자동으로 수집하고, AWS Bedrock의 Claude 3.7 Sonnet을 활용하여 한국어 번역 및 요약을 제공하는 개인 뉴스 서비스입니다.
+
+> 📌 **면책조항**: 본 서비스는 AWS와 공식적으로 연관되지 않으며, 공개된 RSS 피드를 활용한 개인 프로젝트입니다.
+> 
+> 🤖 **개발 도구**: 이 프로젝트는 Amazon Q Developer와 Kiro를 활용하여 개발되었습니다.
 
 ## 🏗️ 아키텍처
+
+![AWS News Service Architecture](aws-news-architecture.png)
+
+<details>
+<summary>Mermaid 다이어그램 보기</summary>
 
 ```mermaid
 graph TB
@@ -34,6 +45,8 @@ graph TB
     style F fill:#ff9900
     style G fill:#ff9900
 ```
+
+</details>
 
 ## 🛠️ 기술 스택
 
@@ -121,6 +134,12 @@ NEXT_PUBLIC_API_URL=https://your-api-gateway-url
 - **API Rate Limiting**: API Gateway 레벨에서 요청 제한
 - **CORS 정책**: 엄격한 CORS 설정
 - **데이터 암호화**: DynamoDB 암호화 저장
+
+## 🤖 개발 도구
+
+이 프로젝트는 다음 도구들을 활용하여 개발되었습니다:
+- **Amazon Q Developer**: AI 기반 코드 어시스턴트
+- **Kiro**: AI 페어 프로그래밍 도구
 
 ## 📝 라이선스
 

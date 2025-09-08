@@ -1,6 +1,8 @@
-# AWS News Service - Frontend
+# AWS News Service - Frontend (Unofficial)
 
-Next.js 14 기반의 모던 웹 애플리케이션
+**⚠️ AWS 비공식 프로젝트**
+
+Next.js 14 기반의 AWS 뉴스 비공식 웹 애플리케이션
 
 ## 🎨 기술 스택
 

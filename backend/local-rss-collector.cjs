@@ -42,7 +42,7 @@ async function collectRss() {
       let duplicateCount = 0;
       let oldCount = 0;
       
-      for (const item of feed.items.slice(0, 20)) {
+      for (const item of feed.items.slice(0, 50)) {
         const publishedDate = new Date(item.pubDate || new Date());
         
         if (publishedDate < filterDate) {
