@@ -10,7 +10,7 @@ AWS 공식 RSS 피드를 자동으로 수집하고, AWS Bedrock의 Claude 3.7 So
 
 ```mermaid
 graph TB
-    subgraph "Frontend (Vercel)"
+    subgraph "Frontend (S3 + CloudFront)"
         A[Next.js App] --> B[React Components]
         B --> C[Tailwind CSS + shadcn/ui]
     end
@@ -41,7 +41,7 @@ graph TB
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
-- **Deployment**: Vercel
+- **Deployment**: S3 + CloudFront
 
 ### Backend
 - **Runtime**: Node.js 20.x
