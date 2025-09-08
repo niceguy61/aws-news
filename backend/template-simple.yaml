@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  ArticlesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  NewsAPIFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/news-api/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Environment:
+        Variables:
+          ARTICLES_TABLE: !Ref ArticlesTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /articles
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ArticlesTable
+
+Outputs:
+  NewsApi:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
