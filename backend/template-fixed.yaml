@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Timeout: 900
+    MemorySize: 1024
+    Runtime: nodejs20.x
+    Environment:
+      Variables:
+        ARTICLES_TABLE: !Ref ArticlesTable
+
+Resources:
+  ArticlesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  NewsAPIFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/news-api/
+      Handler: index.handler
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /articles
+            Method: get
+        ApiById:
+          Type: Api
+          Properties:
+            Path: /articles/{id}
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ArticlesTable
+
+Outputs:
+  NewsApi:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS News Frontend - S3 + CloudFront'
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: aws-news.drumgoon.net
+    Description: Domain name for the website
+
+Resources:
+  # S3 Bucket for static website
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${DomainName}-static'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+Outputs:
+  BucketName:
+    Description: S3 Bucket Name
+    Value: !Ref WebsiteBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-BucketName'
+  
+  BucketDomainName:
+    Description: S3 Bucket Domain Name
+    Value: !GetAtt WebsiteBucket.RegionalDomainName
+    Export:
+      Name: !Sub '${AWS::StackName}-BucketDomainName'
