@@ -9,7 +9,7 @@
 ```mermaid
 graph TB
     subgraph "EventBridge"
-        A[Scheduler Rule<br/>rate(1 hour)]
+        A[Scheduler Rule<br/>rate - 1h]
     end
     
     subgraph "Lambda Functions"
