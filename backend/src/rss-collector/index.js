@@ -11,8 +11,12 @@ console.log(`🌏 Using region: ${region}`);
 const parser = new Parser();
 
 const modelId = process.env.CLAUDE_MODEL_ID || 'apac.anthropic.claude-3-5-sonnet-20240620-v1:0';
-console.log(`🤖 Using Claude model: ${modelId}`);
-console.log(`🌏 Bedrock will use region: ${region}`);
+const enableAI = process.env.ENABLE_AI_PROCESSING === 'true';
+console.log(`🤖 AI Processing: ${enableAI ? 'ENABLED' : 'DISABLED'}`);
+if (enableAI) {
+  console.log(`🤖 Using Claude model: ${modelId}`);
+  console.log(`🌏 Bedrock will use region: ${region}`);
+}
 
 const RSS_FEEDS = [
   {
@@ -65,20 +69,21 @@ exports.handler = async () => {
         const language = feedConfig.url.includes('/ko/') ? 'ko' : 'en';
         
         try {
-          // AI 처리 수행
-          let translatedTitle, translatedContent;
+          let translatedTitle, translatedContent, awsServices;
           
-          if (language === 'ko') {
-            translatedTitle = originalTitle;
-            translatedContent = originalContent;
-          } else {
+          if (enableAI && language !== 'ko') {
+            // AI 번역 및 분석 수행
             [translatedTitle, translatedContent] = await Promise.all([
               translateText(originalTitle),
               translateText(originalContent)
             ]);
+            awsServices = await extractAwsServices(originalTitle + ' ' + originalContent);
+          } else {
+            // AI 처리 비활성화 - 원본 텍스트 사용
+            translatedTitle = originalTitle;
+            translatedContent = originalContent;
+            awsServices = [];
           }
-          
-          const awsServices = await extractAwsServices(originalTitle + ' ' + originalContent);
           
           const article = {
             id: articleId,

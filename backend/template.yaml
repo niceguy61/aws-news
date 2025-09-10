@@ -13,6 +13,7 @@ Globals:
         ARTICLES_TABLE: !Ref ArticlesTable
         BEDROCK_REGION: ap-northeast-2
         CLAUDE_MODEL_ID: anthropic.claude-3-5-sonnet-20240620-v1:0
+        ENABLE_AI_PROCESSING: false
 
 Resources:
   ArticlesTable:
